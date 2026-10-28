@@ -238,6 +238,18 @@
   background: var(--dt-warn-dim);
 }
 
+.dt-badge.probably_damaged {
+  color: #ff9800;
+  border-color: rgba(255, 152, 0, 0.5);
+  background: rgba(255, 152, 0, 0.15);
+}
+
+.dt-badge.probably_intact {
+  color: #00bcd4;
+  border-color: rgba(0, 188, 212, 0.45);
+  background: rgba(0, 188, 212, 0.12);
+}
+
 /* ── Building inspector ── */
 .dt-inspector {
   display: grid;

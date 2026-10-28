@@ -22,7 +22,8 @@ MODALITIES = {
 
 def _load_model(ckpt_path, device):
     ckpt = torch.load(ckpt_path, map_location=device)
-    model = MultiModalDamageClassifier(mode=ckpt["mode"]).to(device)
+    fusion = ckpt.get("fusion", "concat")
+    model = MultiModalDamageClassifier(mode=ckpt["mode"], fusion=fusion).to(device)
     model.load_state_dict(ckpt["state_dict"])
     model.eval()
     return model, ckpt["mode"]

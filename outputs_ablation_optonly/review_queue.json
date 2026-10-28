@@ -1,0 +1,51 @@
+[
+  {
+    "building_id": "intact/1141344353",
+    "true_label": "intact",
+    "predicted_label": "damaged",
+    "probability_damaged": 0.6224,
+    "confidence": 0.6224
+  },
+  {
+    "building_id": "intact/1141523671",
+    "true_label": "intact",
+    "predicted_label": "intact",
+    "probability_damaged": 0.4274,
+    "confidence": 0.5726
+  },
+  {
+    "building_id": "intact/1138999343",
+    "true_label": "intact",
+    "predicted_label": "damaged",
+    "probability_damaged": 0.5719,
+    "confidence": 0.5719
+  },
+  {
+    "building_id": "intact/1139190979",
+    "true_label": "intact",
+    "predicted_label": "intact",
+    "probability_damaged": 0.4834,
+    "confidence": 0.5166
+  },
+  {
+    "building_id": "damaged/1139272419",
+    "true_label": "damaged",
+    "predicted_label": "damaged",
+    "probability_damaged": 0.6475,
+    "confidence": 0.6475
+  },
+  {
+    "building_id": "damaged/1139299108",
+    "true_label": "damaged",
+    "predicted_label": "damaged",
+    "probability_damaged": 0.5625,
+    "confidence": 0.5625
+  },
+  {
+    "building_id": "damaged/1140850506",
+    "true_label": "damaged",
+    "predicted_label": "intact",
+    "probability_damaged": 0.378,
+    "confidence": 0.622
+  }
+]

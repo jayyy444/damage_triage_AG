@@ -6,6 +6,41 @@ Mexico City earthquake subset. Same overall idea (classify -> flag
 low-confidence predictions for human review -> Grad-CAM explain -> PDF
 report), new dataset, new fusion architecture.
 
+## What's new
+
+- **4-Level Calibrated Triage System**: Binning predictions into `intact`, `probably_intact`, `probably_damaged`, and `damaged` via calibrated thresholds `[0.20, 0.50, 0.80]`. Intermediate levels (`probably_intact`, `probably_damaged`) are routed directly to the review queue.
+  > **Note**: QQB labels are binary; the 4 levels are triage priority levels from calibrated probability, validated by monotonic per-level damaged rate - not ground-truth severity classes.
+- **Calibration & Temperature Scaling (`src/evaluate_triage.py`)**: Computes AUROC, PR-AUC, best F1, ECE (10 bins), and Brier score. Fits a post-hoc temperature parameter $T$ on validation logits via L-BFGS, producing reliability diagrams, confusion matrices, and empirical triage damaged rate plots.
+- **Gated Branch Fusion (`--fusion gated`)**: Implements learned per-branch scalar gate attention with softmax weights over modality embeddings, exposing `last_gates` for multimodal branch attribution alongside feature concatenation.
+- **Binary Focal Loss (`--loss focal`)**: Built-in `BinaryFocalLoss(alpha=0.25, gamma=2.0)` to handle disaster damage rarity.
+- **Cross-Validation & Ablation Suites**:
+  - `src/run_cv.py`: Programmatic 5-fold cross-validation producing `cv_results.csv` and reporting mean +/- std for AUROC, PR-AUC, and F1.
+  - `src/run_ablation.py`: Programmatic ablation runner across SAR, Optical, and All modalities (concat + gated) exporting `ablation.csv` and Markdown tables.
+- **Interactive Streamlit Demo (`app.py`)**: Web application to select buildings from the test fold, inspect raw SAR & optical patches, view color-coded triage priority levels, and inspect paired Grad-CAM heatmaps.
+- **Synthetic Smoke Test (`tests/smoke_test.py`)**: Rigorous verification suite running 1-epoch trains, inference, triage assignments, aggregate summaries, evaluation, and backward-compatible checkpoint validation.
+
+### New Commands
+
+```bash
+# Run the pipeline with triage reporting
+python src/run_pipeline.py --data_root data/qqb --mode all
+
+# Comprehensive triage calibration and evaluation on held-out test fold
+python src/evaluate_triage.py --checkpoint checkpoints/model_all_fold-1.pt --fold fold-2.txt
+
+# Run 5-fold cross-validation
+python src/run_cv.py --epochs 30 --mode all
+
+# Run modality and fusion ablation study
+python src/run_ablation.py --epochs 30 --fusion gated
+
+# Launch Streamlit web dashboard
+streamlit run app.py
+
+# Run synthetic smoke test
+python tests/smoke_test.py
+```
+
 ## What changed vs the mexico-earthquake build
 
 | | mexico-earthquake (xBD) | this build (QQB) |

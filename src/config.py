@@ -15,13 +15,21 @@ IMG_SIZE = 224
 
 # predictions whose P(damaged) falls within this margin of 0.5 get routed
 # to the review queue instead of being trusted outright
+# deprecated: superseded by TRIAGE_BINS and REVIEW_LEVELS
 REVIEW_MARGIN = 0.15                     # i.e. prob in [0.35, 0.65] -> flagged
 
-# fold used for validation/inference reporting; the other 4 folds train
+TRIAGE_BINS = [0.20, 0.50, 0.80]
+TRIAGE_LEVELS = ["intact", "probably_intact", "probably_damaged", "damaged"]
+REVIEW_LEVELS = ["probably_intact", "probably_damaged"]
+
+# fold used for validation/checkpoint selection; held-out fold-2 for test evaluation
 VAL_FOLD = "fold-1.txt"
+TEST_FOLD = "fold-2.txt"      # held-out, never used for checkpoint selection
 ALL_FOLDS = ["fold-1.txt", "fold-2.txt", "fold-3.txt", "fold-4.txt", "fold-5.txt"]
 
 MODE = "all"   # "all" (sar+sarftp+opt+optftp fusion) | "sar" | "opt"
+FUSION = "concat"             # "concat" | "gated"
+LOSS = "bce"                  # "bce" | "focal"
 
 # optional pretrained weights — see README "Get the dataset & weights"
 SAR_PRETRAIN = os.path.join(ROOT, "weights", "ResNet18_TSX.pth")   # SAR-HUB TerraSAR-X weights

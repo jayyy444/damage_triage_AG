@@ -1,4 +1,4 @@
-﻿__pycache__/
+__pycache__/
 *.pyc
 .venv/
 venv/
@@ -25,9 +25,9 @@ datasets/
 *.tar
 *.gz
 
-# Generated outputs
-outputs/
-outputs_ablation_optonly/
+# Generated outputs (tracked for zero-setup demo deployment)
+# outputs/
+# outputs_ablation_optonly/
 
 # Local Python virtual environment
 jayy/

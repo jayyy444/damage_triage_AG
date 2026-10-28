@@ -1,0 +1,38 @@
+[
+  {
+    "building_id": "intact/1139181824",
+    "true_label": "intact",
+    "predicted_label": "intact",
+    "probability_damaged": 0.4844,
+    "confidence": 0.5156,
+    "triage_level": "probably_intact",
+    "needs_review": true
+  },
+  {
+    "building_id": "intact/1139658697",
+    "true_label": "intact",
+    "predicted_label": "damaged",
+    "probability_damaged": 0.5817,
+    "confidence": 0.5817,
+    "triage_level": "probably_damaged",
+    "needs_review": true
+  },
+  {
+    "building_id": "intact/1139183180",
+    "true_label": "intact",
+    "predicted_label": "intact",
+    "probability_damaged": 0.2823,
+    "confidence": 0.7177,
+    "triage_level": "probably_intact",
+    "needs_review": true
+  },
+  {
+    "building_id": "intact/1139023120",
+    "true_label": "intact",
+    "predicted_label": "intact",
+    "probability_damaged": 0.2173,
+    "confidence": 0.7827,
+    "triage_level": "probably_intact",
+    "needs_review": true
+  }
+]

@@ -8,3 +8,5 @@ numpy
 fpdf2
 pillow
 matplotlib
+pandas
+streamlit
