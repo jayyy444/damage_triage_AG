@@ -851,58 +851,7 @@ with tabs[7]:
     )
 
     st.markdown("---")
-    st.markdown("### 2. Frequently Asked Viva Questions (Teacher Q&A Defense)")
-
-    with st.expander("Q1: The dataset has binary labels (0 intact, 1 damaged). How did you create 4 triage levels without faking ground truth?"):
-        st.markdown("""
-**Answer for Viva:**
-- **Honest Framing:** We did **NOT** invent a 4-class multi-class ground truth. QQB OSM ground truth is strictly binary ($y \\in \\{0, 1\\}$).
-- **Mathematical Derivation:** The 4 triage levels are **decision-theoretic operational tiers** derived from the model's calibrated damage probability $P(\\text{damaged})$:
-  1. $\\mathbf{P < 0.20} \\rightarrow$ **Intact** (safe structure, lowest rescue priority)
-  2. $\\mathbf{0.20 \\le P < 0.50} \\rightarrow$ **Probably Intact** (low risk, queued for human analyst confirmation)
-  3. $\\mathbf{0.50 \\le P < 0.80} \\rightarrow$ **Probably Damaged** (medium risk, queued for human analyst confirmation)
-  4. $\\mathbf{P \\ge 0.80} \\rightarrow$ **Damaged** (high confidence collapse, immediate SAR dispatch)
-- **Validation:** We validate these tiers via **Temperature Scaling ($T$)** and empirical monotonic damage rates (e.g., verifying that the actual damage percentage strictly increases monotonically across bins).
-""")
-
-    with st.expander("Q2: Since 96% of buildings in the dataset are intact, a naive model predicting all intact gets 96% accuracy. How did you handle class imbalance?"):
-        st.markdown("""
-**Answer for Viva:**
-1. **Weighted Random Sampler:** During training DataLoader creation, every sample is weighted inversely proportional to its class frequency: $w_c = \\frac{1}{N_c}$. This ensures every batch contains balanced representation of intact and damaged structures.
-2. **Binary Focal Loss (Lin et al.):** Rather than naive Cross-Entropy, we incorporated Focal Loss:
-   $$\\text{FL}(p_t) = -\\alpha_t (1 - p_t)^\\gamma \\log(p_t)$$
-   with $\\alpha=0.25$ and $\\gamma=2.0$, down-weighting easy intact negatives and forcing model gradients to concentrate on hard, subtle damage examples.
-3. **Threshold Tuning & Metric Choice:** We reject raw accuracy as a deceptive metric. We report **AUROC**, **PR-AUC (Precision-Recall Area)**, and find the optimal threshold $\\tau^*$ maximizing $F_1$-score on validation splits.
-""")
-
-    with st.expander("Q3: Why can't you initialize the SAR branch from standard ImageNet pre-trained weights?"):
-        st.markdown("""
-**Answer for Viva:**
-- **Domain Shift:** ImageNet consists of natural optical camera photographs with RGB color histograms, perspective projection, and natural illumination.
-- **SAR Physics:** Synthetic Aperture Radar (SAR) is an active coherent microwave imaging system. Pixels represent complex backscatter intensity (dielectric constant, surface roughness, corner reflection), subject to multiplicative **speckle noise** and foreshortening/layover distortion.
-- **Solution:** We initialized the SAR branch using **SAR-HUB TerraSAR-X pre-trained weights** (`ResNet18_TSX.pth`), allowing the encoder to extract true radar geometry features from the first epoch rather than struggling to adapt optical filters.
-""")
-
-    with st.expander("Q4: How does Grad-CAM work on a multi-branch fusion architecture?"):
-        st.markdown("""
-**Answer for Viva:**
-- In a single-backbone CNN, Grad-CAM hooks the single final conv layer.
-- In our 4-branch architecture, each modality encoder has its own independent `layer4` conv block.
-- To produce sensor-decoupled attribution, we attach forward and backward hooks to **one branch's layer4 at a time**, backpropagating the gradient of the final fused damage logit:
-  $$w_k = \\frac{1}{Z} \\sum_i \\sum_j \\frac{\\partial \\text{Logit}}{\\partial A_{i,j}^k}$$
-- This generates **paired heatmaps for the exact same building**: showing what radar scattering identified (rubble pile) side-by-side with what optical color identified (shattered roof).
-""")
-
-    with st.expander("Q5: What are the engineering limitations and assumptions of this project? (Be upfront with examiners)"):
-        st.markdown("""
-**Honest Engineering Limitations:**
-1. **Spatial Generalization:** Dataset is localized to Islahiye, Gaziantep Province. Structural building styles and soil responses vary across different global earthquake zones.
-2. **OSM Footprint Dependency:** The pipeline assumes accurate building polygon boundaries from OpenStreetMap/HOT. Misaligned polygons or unmapped buildings after disasters require human correction.
-3. **Sensor Co-registration:** SAR and Optical sensors have different look angles (SAR is side-looking off-nadir, Optical is near-nadir). Exact orthorectification is critical.
-""")
-
-    st.markdown("---")
-    st.markdown("### 3. Real-Time Deployment & Operational Specs")
+    st.markdown("### 2. Real-Time Deployment & Operational Specs")
     spec_col1, spec_col2, spec_col3, spec_col4 = st.columns(4)
     with spec_col1:
         st.metric("Inference Latency", "18.4 ms", "per building (GPU)")
