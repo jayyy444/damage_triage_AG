@@ -656,25 +656,53 @@ with tabs[3]:
     # Automatic heatmap fetching/generating for selected building
     cmp_sar_path, cmp_opt_path = get_or_generate_heatmaps(cmp_bid, ckpt_path, data_root)
 
-    c1, c2 = st.columns(2)
-    if cmp_sar_path and os.path.exists(cmp_sar_path):
-        with c1:
-            render_satellite_image(cmp_sar_path, "SAR Radar Modality (Texture / Debris)")
-    else:
-        with c1:
-            st.info("SAR imagery rendering...")
+    # Check if a crystal-clear pre-disaster optical image exists
+    bid_raw_num = short_id(cmp_bid)
+    clear_pre_path = os.path.join(HEATMAP_DIR, f"pre_{bid_raw_num}_clear.png")
+    has_clear_pre = os.path.exists(clear_pre_path)
 
-    if cmp_opt_path and os.path.exists(cmp_opt_path):
+    if has_clear_pre:
+        c0, c1, c2 = st.columns(3)
+        with c0:
+            render_satellite_image(clear_pre_path, "1. Pre-Disaster Optical (Intact Building)")
+        with c1:
+            if cmp_opt_path and os.path.exists(cmp_opt_path):
+                render_satellite_image(cmp_opt_path, "2. Post-Disaster Optical (Collapse / Rubble)")
+            else:
+                st.info("Optical imagery rendering...")
         with c2:
-            render_satellite_image(cmp_opt_path, "Optical RGB Modality (Structural Collapse)")
+            if cmp_sar_path and os.path.exists(cmp_sar_path):
+                render_satellite_image(cmp_sar_path, "3. Sentinel-1 SAR (Radar Backscatter Loss)")
+            else:
+                st.info("SAR imagery rendering...")
+        st.markdown("""
+<div style="font-size: 0.75rem; color: var(--dt-text); margin-top: 0.6rem; padding: 0.5rem 0.8rem; background: var(--dt-surface); border: 1px solid var(--dt-border); border-radius: 4px;">
+  <b>Visual Comparison Guide:</b><br>
+  • <b>Image 1 (Left):</b> High-resolution clear satellite photo of the building <i>before</i> the earthquake (intact walls & roof clearly visible).<br>
+  • <b>Image 2 (Center):</b> Optical photo <i>after</i> the earthquake with Grad-CAM heatmap highlighting the shattered roof & rubble in 🔴 <b>Red</b>.<br>
+  • <b>Image 3 (Right):</b> Sentinel-1 SAR radar proving loss of structural double-bounce reflection.
+</div>
+""", unsafe_allow_html=True)
     else:
-        with c2:
-            st.info("Optical imagery rendering...")
+        c1, c2 = st.columns(2)
+        if cmp_sar_path and os.path.exists(cmp_sar_path):
+            with c1:
+                render_satellite_image(cmp_sar_path, "SAR Radar Modality (Texture / Debris)")
+        else:
+            with c1:
+                st.info("SAR imagery rendering...")
 
-    st.caption(
-        "Side-by-side Grad-CAM reveals complementary features: SAR detects radar backscatter changes from rubble, "
-        "while Optical visualizes roof collapse and debris patterns."
-    )
+        if cmp_opt_path and os.path.exists(cmp_opt_path):
+            with c2:
+                render_satellite_image(cmp_opt_path, "Optical RGB Modality (Structural Collapse)")
+        else:
+            with c2:
+                st.info("Optical imagery rendering...")
+
+        st.caption(
+            "Side-by-side Grad-CAM reveals complementary features: SAR detects radar backscatter changes from rubble, "
+            "while Optical visualizes roof collapse and debris patterns."
+        )
     st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown('<div class="dt-panel"><div class="dt-panel-head"><p class="dt-panel-title">Multi-Modal Fusion Architecture</p></div>', unsafe_allow_html=True)
