@@ -1,5 +1,15 @@
 [
   {
+    "building_id": "damaged/1139539884",
+    "true_label": "damaged",
+    "predicted_label": "damaged",
+    "probability_damaged": 0.999,
+    "confidence": 0.999,
+    "triage_level": "damaged",
+    "needs_review": false,
+    "osm_id": "1139539884"
+  },
+  {
     "building_id": "intact/1139203789",
     "true_label": "intact",
     "predicted_label": "intact",

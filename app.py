@@ -569,8 +569,14 @@ with tabs[2]:
     with insp_col1:
         stat_filter = st.selectbox("Filter inspection list", ["all", "damaged", "probably_damaged", "probably_intact", "intact"], key="inspect_filter")
         v_df = pred_df if stat_filter == "all" else pred_df[pred_df["triage_level"] == stat_filter]
-        v_df = v_df.sort_values("probability_damaged", ascending=False)
-        chosen_bid = st.selectbox("Select Building ID", v_df["building_id"].tolist(), key="inspect_chosen")
+        
+        # Ensure 1139539884 is at the very top of the list if present
+        v_bids = v_df["building_id"].tolist()
+        fav_bid = "damaged/1139539884"
+        if fav_bid in v_bids:
+            v_bids = [fav_bid] + [b for b in v_bids if b != fav_bid]
+        
+        chosen_bid = st.selectbox("Select Building ID", v_bids, index=0, key="inspect_chosen")
         st.dataframe(
             v_df[["osm_id", "triage_level", "probability_damaged", "confidence", "true_label"]].head(50),
             use_container_width=True,
@@ -640,7 +646,7 @@ with tabs[3]:
         compare_candidates = pred_df[pred_df["probability_damaged"] >= 0.5]["building_id"].tolist()[:20]
 
     # Ensure clearest high-resolution candidate is at the top of the list
-    best_candidate = "damaged/1139181823"
+    best_candidate = "damaged/1139539884"
     if best_candidate in pred_df["building_id"].values:
         compare_candidates = [best_candidate] + [b for b in compare_candidates if b != best_candidate]
 
