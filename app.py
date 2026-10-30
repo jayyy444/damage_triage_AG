@@ -891,12 +891,6 @@ with tabs[7]:
     ])
     st.table(ablation_display_df)
 
-    st.info(
-        "💡 **Key Viva Takeaway:** In Optical-only inspection, surface discolorations and shadow changes caused 5 actual intact buildings "
-        "to be falsely ranked in the top 20 emergency dispatch list. SAR backscatter fusion completely eliminated these false alarms (0% false positives in top 20), "
-        "preventing critical misallocation of search-and-rescue teams."
-    )
-
     st.markdown("---")
     st.markdown("### 2. Real-Time Deployment & Operational Specs")
     spec_col1, spec_col2, spec_col3, spec_col4 = st.columns(4)
