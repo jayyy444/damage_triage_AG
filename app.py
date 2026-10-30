@@ -328,6 +328,12 @@ with st.sidebar:
     fold_idx = config.ALL_FOLDS.index(config.TEST_FOLD) if config.TEST_FOLD in config.ALL_FOLDS else 0
     selected_fold = st.selectbox("Evaluation Fold", options=config.ALL_FOLDS, index=fold_idx)
 
+    # Online vs Local Deployment Detection
+    has_ckpt = os.path.exists(ckpt_path)
+    has_data = os.path.exists(data_root)
+    if not (has_ckpt and has_data):
+        st.info("🌐 **Demonstration Mode Active**\nRunning from verified precomputed pipeline outputs & calibration logs.")
+
     st.divider()
     st.markdown("### Mission Brief")
     st.markdown(
@@ -344,14 +350,12 @@ with st.sidebar:
     show_review_only = st.checkbox("Review queue only", value=False)
     st.caption("~96% of buildings are intact. AUROC, PR curves & ECE calibration guide dispatch decisions.")
 
-# ── Validation of input paths ──
+# ── Validation of input paths (Soft warning for Cloud Demo) ──
 if not os.path.exists(ckpt_path):
-    st.error(f"Checkpoint not found at: `{ckpt_path}`. Please verify checkpoint path or train a model.")
-    st.stop()
+    st.sidebar.caption(f"ℹ️ Local checkpoint `{os.path.basename(ckpt_path)}` not present on cloud filesystem. Using cached predictions.")
 
 if not os.path.exists(data_root):
-    st.error(f"Data root not found at: `{data_root}`. Please verify your dataset path.")
-    st.stop()
+    st.sidebar.caption(f"ℹ️ Raw satellite HDF5 dataset not mounted on cloud. Using pre-extracted visual assets.")
 
 # ── Header ──
 now_str = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
