@@ -639,7 +639,12 @@ with tabs[3]:
     if not compare_candidates:
         compare_candidates = pred_df[pred_df["probability_damaged"] >= 0.5]["building_id"].tolist()[:20]
 
-    cmp_bid = st.selectbox("Select Building for Dual-Modality Comparison", compare_candidates, key="cmp_bid")
+    # Ensure clearest high-resolution candidate is at the top of the list
+    best_candidate = "damaged/1139181823"
+    if best_candidate in pred_df["building_id"].values:
+        compare_candidates = [best_candidate] + [b for b in compare_candidates if b != best_candidate]
+
+    cmp_bid = st.selectbox("Select Building for Dual-Modality Comparison", compare_candidates, index=0, key="cmp_bid")
 
     r = pred_df[pred_df["building_id"] == cmp_bid].iloc[0]
     st.markdown(
