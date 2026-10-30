@@ -437,7 +437,7 @@ tabs = st.tabs([
     "Priority Response",
     "Satellite Gallery",
     "AI Results & Calibration",
-    "Viva Defense & Methodology",
+    "Research Methodology & Ablation",
     "Reports & Export",
 ])
 
@@ -860,10 +860,10 @@ with tabs[6]:
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB 8 — Viva Defense & Methodology (Academic Presentation Ready)
+# TAB 8 — Research Methodology & Ablation Benchmarks
 # ══════════════════════════════════════════════════════════════════════════════
 with tabs[7]:
-    st.markdown('<div class="dt-panel"><div class="dt-panel-head"><p class="dt-panel-title">Major Project Viva Defense & Academic Defense Guide</p><span class="dt-panel-meta">B.Tech / Degree Major Project Evaluation</span></div>', unsafe_allow_html=True)
+    st.markdown('<div class="dt-panel"><div class="dt-panel-head"><p class="dt-panel-title">Comparative Research Methodology & Ablation Benchmarks</p><span class="dt-panel-meta">Multi-Modal Scientific Validation</span></div>', unsafe_allow_html=True)
 
     st.markdown("### 1. Empirical Modality Ablation (Why SAR + Optical beats Optical alone)")
     st.markdown(
