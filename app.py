@@ -618,6 +618,14 @@ with tabs[2]:
             with h_col2:
                 st.info("Optical Grad-CAM rendering...")
 
+        st.markdown("""
+<div style="font-size: 0.72rem; color: var(--dt-muted); margin-top: 0.6rem; padding: 0.4rem 0.6rem; background: var(--dt-surface); border: 1px solid var(--dt-border); border-radius: 4px;">
+  <b>Sensor Physics Guide:</b><br>
+  🔴 <b>Red / Yellow Overlay:</b> Structural damage / collapse debris detected by Grad-CAM.<br>
+  🛰️ <b>SAR Imagery:</b> Sentinel-1 C-band Radar backscatter (measures corner-reflection geometry through clouds).<br>
+  📷 <b>Resolution:</b> Raw 10m GSD satellite footprint normalized to building bounds.
+</div>
+""", unsafe_allow_html=True)
         st.markdown("</div>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 

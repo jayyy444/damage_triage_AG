@@ -285,6 +285,15 @@
   border: 1px solid var(--dt-border);
   background: #060910;
   overflow: hidden;
+  border-radius: 6px;
+}
+
+/* Crisp pixel rendering to eliminate bilinear smoothing blur on satellite crops */
+.dt-sat-frame img, [data-testid="stImage"] img {
+  image-rendering: -webkit-optimize-contrast !important;
+  image-rendering: crisp-edges !important;
+  image-rendering: pixelated !important;
+  filter: contrast(1.18) brightness(1.05);
 }
 
 .dt-sat-frame::before,
